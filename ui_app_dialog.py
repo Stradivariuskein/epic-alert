@@ -51,7 +51,7 @@ class Ui(object):
 "    margin: 0;\n"
 "}\n"
 "\n"
-"QPushButton#previus_button {\n"
+"QPushButton#previous_button {\n"
 "\n"
 "        background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 100), stop:1 rgba(0, 0, 0, 0));\n"
 "\n"
@@ -61,7 +61,7 @@ class Ui(object):
 "    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(0, 0, 0, 100));\n"
 "}\n"
 "\n"
-"QLabel#date {\n"
+"QLabel#expiration {\n"
 "    background-color: rgba(0, 0, 0, 100);\n"
 "    font-size: 18px;\n"
 "}")
@@ -111,15 +111,15 @@ class Ui(object):
         self.buy_button.setSizePolicy(sizePolicy)
         self.buy_button.setObjectName("buy_button")
         self.gridLayout.addWidget(self.buy_button, 0, 1, 1, 1)
-        self.previus_button = QtWidgets.QPushButton(self.body)
+        self.previous_button = QtWidgets.QPushButton(self.body)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.previus_button.sizePolicy().hasHeightForWidth())
-        self.previus_button.setSizePolicy(sizePolicy)
-        self.previus_button.setMaximumSize(QtCore.QSize(40, 16777215))
-        self.previus_button.setObjectName("previus_button")
-        self.gridLayout.addWidget(self.previus_button, 0, 0, 1, 1)
+        sizePolicy.setHeightForWidth(self.previous_button.sizePolicy().hasHeightForWidth())
+        self.previous_button.setSizePolicy(sizePolicy)
+        self.previous_button.setMaximumSize(QtCore.QSize(40, 16777215))
+        self.previous_button.setObjectName("previous_button")
+        self.gridLayout.addWidget(self.previous_button, 0, 0, 1, 1)
         self.next_button = QtWidgets.QPushButton(self.body)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
@@ -129,10 +129,10 @@ class Ui(object):
         self.next_button.setMaximumSize(QtCore.QSize(40, 16777215))
         self.next_button.setObjectName("next_button")
         self.gridLayout.addWidget(self.next_button, 0, 2, 1, 1)
-        self.date = QtWidgets.QLabel(self.body)
-        self.date.setAlignment(QtCore.Qt.AlignCenter)
-        self.date.setObjectName("date")
-        self.gridLayout.addWidget(self.date, 1, 0, 1, 3)
+        self.expiration = QtWidgets.QLabel(self.body)
+        self.expiration.setAlignment(QtCore.Qt.AlignCenter)
+        self.expiration.setObjectName("expiration")
+        self.gridLayout.addWidget(self.expiration, 1, 0, 1, 3)
         #self.background_layout.addWidget(self.body, 2, 0, 1, 1)
         self.background_img = QtWidgets.QLabel(Dialog)
         self.background_img.setEnabled(True)
@@ -162,8 +162,8 @@ class Ui(object):
         self.exit_btn.setText(_translate("Dialog", "X"))
         self.title_game.setText(_translate("Dialog", "title"))
         self.buy_button.setText(_translate("Dialog", "buy game"))
-        self.previus_button.setText(_translate("Dialog", "<"))
-        self.previus_button.setProperty("class", _translate("Dialog", "nav-btn"))
+        self.previous_button.setText(_translate("Dialog", "<"))
+        self.previous_button.setProperty("class", _translate("Dialog", "nav-btn"))
         self.next_button.setText(_translate("Dialog", ">"))
         self.next_button.setProperty("class", _translate("Dialog", "nav-btn"))
-        self.date.setText(_translate("Dialog", "date"))
+        self.expiration.setText(_translate("Dialog", "expiration"))
