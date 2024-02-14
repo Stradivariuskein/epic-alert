@@ -10,6 +10,19 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+class DraggableLabel(QtWidgets.QLabel):
+    def __init__(self, text):
+        super().__init__(text)
+        self.setAcceptDrops(True)
+
+    def mousePressEvent(self, event):
+        if event.button() == QtCore.Qt.LeftButton:
+            self.drag_start_position = event.pos()
+
+    def mouseMoveEvent(self, event):
+        if event.buttons() == QtCore.Qt.LeftButton:
+            delta = event.pos() - self.drag_start_position
+            self.window().move(self.window().pos() + delta)
 
 class Ui(object):
     def setupUi(self, Dialog):
@@ -37,18 +50,21 @@ class Ui(object):
 "    padding: 5px;\n"
 "}\n"
 "\n"
-"QLabel#background_img {\n"
+".background_img {\n"
 "    padding: 0px;\n"
 "    qproperty-alignment: AlignCenter;\n"
 "}\n"
 "\n"
 "QLabel#title_game {\n"
 "    background-color: rgba(0, 0, 0, 100);\n"
+"    margin: 0px;\n"
+"    text-align: center;\n"
 "}\n"
 "\n"
 "QPushButton#exit_btn {\n"
 "    font-size: 36px;\n"
-"    margin: 0;\n"
+"    color: rgba(156, 12, 12, 0.652);\n"
+"    text-align: center;\n"
 "}\n"
 "\n"
 "QPushButton#previous_button {\n"
@@ -88,7 +104,7 @@ class Ui(object):
         self.exit_btn.setSizeIncrement(QtCore.QSize(0, 0))
         self.exit_btn.setObjectName("exit_btn")
         #self.gridLayout_2.addWidget(self.exit_btn, 0, 0, 1, 1)
-        self.title_game = QtWidgets.QLabel(self.header)
+        self.title_game = DraggableLabel(self.header)
         self.title_game.setLineWidth(1)
         self.title_game.setMidLineWidth(0)
         self.title_game.setAlignment(QtCore.Qt.AlignCenter)
@@ -135,6 +151,9 @@ class Ui(object):
         self.gridLayout.addWidget(self.expiration, 1, 0, 1, 3)
         #self.background_layout.addWidget(self.body, 2, 0, 1, 1)
         self.background_img = QtWidgets.QLabel(Dialog)
+        self.next_background_img = QtWidgets.QLabel(Dialog)
+        self.next_background_img.setObjectName("background_img_2")
+        self.next_background_img.setProperty("class", "background_img")
         self.background_img.setEnabled(True)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -147,9 +166,9 @@ class Ui(object):
         self.background_img.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.background_img.setLineWidth(0)
         self.background_img.setMidLineWidth(0)
-        self.background_img.setText("")
         self.background_img.setWordWrap(False)
-        self.background_img.setObjectName("background_img")
+        self.background_img.setProperty("class", "background_img")
+        self.background_img.setObjectName("background_img_1")
         #self.background_layout.addWidget(self.background_img, 0, 0, 1, 1)
         self.horizontalLayout.addLayout(self.background_layout)
 
@@ -158,10 +177,9 @@ class Ui(object):
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        Dialog.setWindowTitle(_translate("Dialog", "Free Games"))
         self.exit_btn.setText(_translate("Dialog", "X"))
         self.title_game.setText(_translate("Dialog", "title"))
-        self.buy_button.setText(_translate("Dialog", "buy game"))
         self.previous_button.setText(_translate("Dialog", "<"))
         self.previous_button.setProperty("class", _translate("Dialog", "nav-btn"))
         self.next_button.setText(_translate("Dialog", ">"))

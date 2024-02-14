@@ -1,11 +1,15 @@
+import time
+import webbrowser
 from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright, Playwright
 
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36'
 URL = 'https://store.epicgames.com/en-US/'
+STORE_URL = 'https://store.epicgames.com'
 # Etiquetas para el filtrado y las keys par el diccionario
 FREE_NOW = 'free now'
 COMING_SOON = 'coming soon'
+
 
 class FreeGame():
     '''Data game'''
@@ -14,6 +18,9 @@ class FreeGame():
         self.img_src = img_src
         self.link = link
         self.expiration = expiration
+        
+    def open_in_store(self):
+        webbrowser.open(STORE_URL + self.link)
 
     def __str__(self) -> str:
         return f"Title: {self.title_game}\tlink: {self.link}\texpiration: {self.expiration}\timg_src: {self.img_src}\n"
@@ -94,10 +101,13 @@ class ApiFreeGame():
                 game = self._get_attributes_from_html(elem, FREE_NOW)
             elif COMING_SOON in inner_html.lower():
                 game = self._get_attributes_from_html(elem, COMING_SOON)
-
-            if not game is None :
-                self.games.append(game)
-                game = None
+            try:
+                if not game is None :
+                    self.games.append(game)
+                    game = None
+            except:
+                time.sleep(300)
+                return self.get_free_games()
 
         browser.close()
         return self.games

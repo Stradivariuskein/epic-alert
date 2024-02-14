@@ -48,7 +48,7 @@ QPushButton#exit_btn {
 	margin: 0;
 }
 
-QPushButton#previus_button {
+QPushButton#previous_button {
 
 		background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 100), stop:1 rgba(0, 0, 0, 0));
 
@@ -184,7 +184,7 @@ QLabel#date {
          </widget>
         </item>
         <item row="0" column="0">
-         <widget class="QPushButton" name="previus_button">
+         <widget class="QPushButton" name="previous_button">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
             <horstretch>0</horstretch>
