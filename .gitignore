@@ -3,3 +3,4 @@ env
 __pycache__
 .vscode
 notas.txt
+games_data.json
