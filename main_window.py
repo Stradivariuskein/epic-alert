@@ -10,6 +10,7 @@ from auto_buy_game import ApiFreeGame
 
 
 class App(QDialog):
+    '''main window app'''
     def __init__(self, games=None):
         super().__init__()
         self.ui = Ui()
@@ -52,17 +53,6 @@ class App(QDialog):
                     WINDOWS_HEIGHT,
                     Qt.SmoothTransformation
                     )
-                # si la imagen no ocupa toda la ventana
-                # ajusta el tamaño de la imagen
-                # if scaled_pixmap.width() < WINDOWS_WIDTH:
-                #     scaled_value = (
-                #         (1 - scaled_pixmap.width() / WINDOWS_WIDTH) + 1
-                #         )
-                #     img_width = int(scaled_value * WINDOWS_WIDTH)
-                #     scaled_pixmap = pixmap.scaledToWidth(
-                #         img_width,
-                #         Qt.SmoothTransformation
-                #         )
                 self.img_games.append(scaled_pixmap)
             return len(self.img_games) == len(self.games)
 
@@ -86,22 +76,6 @@ class App(QDialog):
 
     def buy_game(self):
         self.games[self.index_game].open_in_store()
-
-    def set_background_img(self, element=None, index_game=None):
-        if element is None:
-            element = self.ui.background_img
-
-        if index_game is None:
-            index_game = self.index_game
-        elif not (index_game >= 0 and index_game <= len(self.games)):
-            raise IndexError("out of range index")
-
-        # pone la imagen
-        try:
-            element.setPixmap(self.img_games[index_game])
-        except IndexError:
-            print("Error: IndexError, missing images")
-            element.setPixmap(QPixmap())
 
     def put_elements_windows(self):
         self.ui.background_layout.addWidget(self.ui.header, 0, 0, 1, 1)
@@ -137,6 +111,22 @@ class App(QDialog):
 
     def set_games(self, games: dict[str]) -> None:
         self.games = games
+
+    def set_background_img(self, element=None, index_game=None):
+        if element is None:
+            element = self.ui.background_img
+
+        if index_game is None:
+            index_game = self.index_game
+        elif not (index_game >= 0 and index_game <= len(self.games)):
+            raise IndexError("out of range index")
+
+        # pone la imagen
+        try:
+            element.setPixmap(self.img_games[index_game])
+        except IndexError:
+            print("Error: IndexError, missing images")
+            element.setPixmap(QPixmap())
 
     # cambiara la imagen el titulo, link y fecha con una animación de delis
     def view_next_game(self):

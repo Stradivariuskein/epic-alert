@@ -26,11 +26,13 @@ class Label(QLabel):
 
 
 class NotificationWindow(QWidget):
+    # position es para la posicion en pantalla
     def __init__(self, title, message,
-                 on_click, timeout=5000, position=1):
+                 on_click, timeout=5000, position=0, index_game=0): 
         super().__init__()
         self.timeout = timeout
-        self.position = position + 1
+        self.position = position
+        self.index_game = index_game
         self.setWindowTitle(title.upper())
         self.setWindowFlags(Qt.WindowStaysOnTopHint |
                             Qt.FramelessWindowHint |
@@ -62,7 +64,7 @@ class NotificationWindow(QWidget):
 
         title_label = Label(title.upper())
         message_button = QPushButton(message.upper())
-        message_button.clicked.connect(on_click)
+        message_button.clicked.connect(lambda: on_click(self.position))
         close_button = QPushButton("X")
         close_button.setObjectName("close_button")
         close_button.setMaximumWidth(20)
@@ -102,10 +104,8 @@ class NotificationWindow(QWidget):
     def move_to_bottom_right(self):
         self.animation = QPropertyAnimation(self, b"geometry")
         self.animation.setDuration(1000)
-        # Curva de aceleración para un movimiento más natural
         self.animation.setEasingCurve(QEasingCurve.OutQuad)
 
-        # Establecer la geometría inicial para la animación
         desktop_rect = QApplication.desktop().availableGeometry()
         new_x = desktop_rect.right()  # Iniciar desde la derecha de la pantalla
         position_pixels = ((WINDOW_HEIGHT - MARGIN_BOTTOM) * self.position) + 5
@@ -124,8 +124,11 @@ class NotificationWindow(QWidget):
             notifications_games = data["dont_notifications_games"]
         except KeyError:
             notifications_games = []
-        notifications_games.append(int(self.position - 1))
-        FileManager.update_from_key("dont_notifications_games", notifications_games)
+        notifications_games.append(int(self.index_game))
+        FileManager.update_from_key(
+            "dont_notifications_games",
+            notifications_games
+            )
 
     def close_notification(self):
         self.close()
@@ -134,6 +137,7 @@ class NotificationWindow(QWidget):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     notifications = []
+
     def test():
         pass
 

@@ -9,7 +9,7 @@ from file_manager import FileManager
 
 HEADLESS_PARAMS = ["headless", "-headless", "--headless"]
 CHECK_GAMES_DELY = 43200000  # 12hs
-NOTIFICATION_DELAY = 10000#3600000  # 1hs
+NOTIFICATION_DELAY = 3600000  # 1hs
 
 
 
@@ -41,31 +41,18 @@ class TrayApplication(QDialog):
             print(f"Error: parameter exception {e}")
             raise Exception(f"Unexpected error: parameter exception {e}")
         
-        # games_ids = []
-        # for i in range(len(games)):
-        #     new_notification = NotificationWindow(
-        #         games[i].title_game,
-        #         games[i].expiration,
-        #         self.dont_remember_notification,
-        #         self.main_window.show,
-        #         position=i,                
-        #         )
-        #     games_ids.append(i)
-        #     new_notification.show()
-        #     self.notifications.append(new_notification)
-
-        # FileManager.update_from_key("notifications_games", games_ids)
         self.show_notifications()
         self.init_ui()
         self.create_tray_icon()
 
-    def show_notification(self, position):
+    def show_notification(self, index_game, position):
 
         new_notification = NotificationWindow(
-                    self.main_window.games[position].title_game,
-                    self.main_window.games[position].expiration,
+                    self.main_window.games[index_game].title_game,
+                    self.main_window.games[index_game].expiration,
                     self.open_main_window,
-                    position=position
+                    position=position,
+                    index_game=index_game
                     )
         return new_notification
 
@@ -79,7 +66,8 @@ class TrayApplication(QDialog):
         for i in range(len(self.epic_api.games)):
             if i in games_ids:
                 continue
-            new_notification = self.show_notification(i)
+            position_notification = len(self.notifications) + 1
+            new_notification = self.show_notification(i, position_notification)
             self.notifications.append(new_notification)
             new_notification.show()
 
@@ -117,7 +105,14 @@ class TrayApplication(QDialog):
         # Mostrar el icono en la bandeja del sistema
         tray_icon.show()
 
-    def open_main_window(self):
+    def open_main_window(self, index_game=0):
+        len_games = len(self.epic_api.games)
+        if not (0 <= index_game < len_games):
+            index_game = 0
+        self.main_window.index_game = index_game
+        self.main_window.set_background_img()
+        self.main_window.show_game()
+
         self.main_window.show()
         self.main_window.raise_()
 

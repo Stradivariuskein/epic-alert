@@ -9,8 +9,8 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-WINDOWS_HEIGHT = 366
-WINDOWS_WIDTH = 746
+WINDOWS_HEIGHT = 420
+WINDOWS_WIDTH = 748
 
 class DraggableLabel(QtWidgets.QLabel):
     def __init__(self, text):
