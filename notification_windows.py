@@ -52,11 +52,15 @@ class NotificationWindow(QWidget):
 
                             QPushButton#close_button {
                                 color: rgba(236, 89, 89, 0.652);
+                                
                             }
 
                             QPushButton#dont_remember_button {
                                 color: rgba(233, 207, 64, 0.712);
                             }
+                           QPushButton#message_button {
+                                min-height: 70px;
+                           }
                            """)
 
         gridLayout = QGridLayout()
@@ -65,6 +69,7 @@ class NotificationWindow(QWidget):
         title_label = Label(title.upper())
         message_button = QPushButton(message.upper())
         message_button.clicked.connect(lambda: on_click(self.position))
+        message_button.setObjectName("message_button")
         close_button = QPushButton("X")
         close_button.setObjectName("close_button")
         close_button.setMaximumWidth(20)
