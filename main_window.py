@@ -1,13 +1,12 @@
 from PyQt5.QtWidgets import QApplication, QDialog, QWidget
 from PyQt5.QtCore import QPropertyAnimation, QRect, Qt
 from PyQt5.QtGui import QIcon, QPixmap
-from ui_app_dialog import Ui
+from ui_app_dialog import Ui, WINDOWS_WIDTH, WINDOWS_HEIGHT
 import sys
 import requests
 from auto_buy_game import ApiFreeGame
 
-WINDOWS_HEIGHT = 366
-WINDOWS_WIDTH = 746
+
 
 
 class App(QDialog):
@@ -30,6 +29,7 @@ class App(QDialog):
         self.ui.exit_btn.clicked.connect(self.close_windows)
         self.ui.next_button.clicked.connect(self.view_next_game)
         self.ui.previous_button.clicked.connect(self.view_previous_game)
+
 
         # self.put_elements_body()
         self.put_elements_windows()
@@ -54,15 +54,15 @@ class App(QDialog):
                     )
                 # si la imagen no ocupa toda la ventana
                 # ajusta el tamaño de la imagen
-                if scaled_pixmap.width() < WINDOWS_WIDTH:
-                    scaled_value = (
-                        (1 - scaled_pixmap.width() / WINDOWS_WIDTH) + 1
-                        )
-                    img_width = int(scaled_value * WINDOWS_WIDTH)
-                    scaled_pixmap = pixmap.scaledToWidth(
-                        img_width,
-                        Qt.SmoothTransformation
-                        )
+                # if scaled_pixmap.width() < WINDOWS_WIDTH:
+                #     scaled_value = (
+                #         (1 - scaled_pixmap.width() / WINDOWS_WIDTH) + 1
+                #         )
+                #     img_width = int(scaled_value * WINDOWS_WIDTH)
+                #     scaled_pixmap = pixmap.scaledToWidth(
+                #         img_width,
+                #         Qt.SmoothTransformation
+                #         )
                 self.img_games.append(scaled_pixmap)
             return len(self.img_games) == len(self.games)
 

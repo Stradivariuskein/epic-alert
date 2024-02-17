@@ -118,8 +118,8 @@ class ApiFreeGame():
             # Analiza el contenido HTML con BeautifulSoup
             soup = BeautifulSoup(page_content, 'html.parser')
 
-            # Encuentra todos los elementos con la clase 'css-1ukp34s'
-            elements = soup.find_all(class_='css-1ukp34s')
+            # Encuentra todos los elementos con el atributo data-component=FreeOfferCard
+            elements = soup.find_all(attrs={'data-component': 'FreeOfferCard'})
             for elem in elements:
                 # Obtiene el HTML interno del elemento
                 inner_html = elem.decode_contents()
@@ -135,8 +135,8 @@ class ApiFreeGame():
                         game = None
                 except NameError:
                     print("Error in request. Retried...")
-                    time.sleep(300)
-                    return self.get_free_games()
+                    #time.sleep(300)
+                    #return self.get_free_games()
                 except Exception as e:
                     print(f"Unexpected error in get_free_games: {e}")
             browser.close()
@@ -167,8 +167,9 @@ class ApiFreeGame():
 
 if __name__ == "__main__":
 
-    with sync_playwright() as playwright:
-        games = ApiFreeGame(playwright)
-        games.get_free_games()
-        games.save_games_to_file(FILE_PATH)
-        print(games.get_olds_games())
+
+    games = ApiFreeGame()
+    games.get_free_games()
+    #games.save_games_to_file(FILE_PATH)
+    print(games.get_olds_games())
+

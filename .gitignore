@@ -4,3 +4,12 @@ __pycache__
 .vscode
 notas.txt
 games_data.json
+main.spec
+Free Games beta.spec
+propaganda.txt
+build
+build/*
+dist
+dist/*
+landingpage/boseto.png
+landingpage/notas.txt

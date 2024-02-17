@@ -2,6 +2,9 @@ import sys
 from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtWidgets import QLabel, QPushButton, QGridLayout
 from PyQt5.QtCore import Qt, QTimer, QPropertyAnimation, QRect, QEasingCurve
+from PyQt5.QtGui import QPainter, QFontMetrics
+from file_manager import FileManager
+
 WINDOW_WIDTH = 300
 WINDOW_HEIGHT = 150
 MARGIN_RIGHT = 5
@@ -9,15 +12,26 @@ MARGIN_BOTTOM = 10
 DEFAULT_DELAY = 500
 
 
+class Label(QLabel):
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+
+        metrics = QFontMetrics(self.font())
+        elided = metrics.elidedText(
+            self.text(), Qt.ElideRight, self.width()-20
+            )
+
+        painter.drawText(self.rect(), self.alignment(), elided)
+
+
 class NotificationWindow(QWidget):
     def __init__(self, title, message,
-                 func_remembered, timeout=3000, position=1):
+                 on_click, timeout=5000, position=1):
         super().__init__()
         self.timeout = timeout
         self.position = position + 1
-        self.func_remembered = func_remembered
-
-        self.setWindowTitle(title)
+        self.setWindowTitle(title.upper())
         self.setWindowFlags(Qt.WindowStaysOnTopHint |
                             Qt.FramelessWindowHint |
                             Qt.Tool)
@@ -31,7 +45,7 @@ class NotificationWindow(QWidget):
                             }
 
                             QLabel {
-                                max-width: 300px;
+                                max-width: 277px;
                             }
 
                             QPushButton#close_button {
@@ -46,21 +60,21 @@ class NotificationWindow(QWidget):
         gridLayout = QGridLayout()
         gridLayout.setSpacing(0)
 
-        title_label = QLabel(title)
-        message_label = QLabel(message)
-        message_label.setWordWrap(True)
+        title_label = Label(title.upper())
+        message_button = QPushButton(message.upper())
+        message_button.clicked.connect(on_click)
         close_button = QPushButton("X")
         close_button.setObjectName("close_button")
         close_button.setMaximumWidth(20)
-        dont_remember_button = QPushButton("Recordar mastarde")
+        dont_remember_button = QPushButton("No recordar..")
         dont_remember_button.setObjectName("dont_remember_button")
 
         gridLayout.addWidget(title_label, 0, 0, 1, 2)
         gridLayout.addWidget(close_button, 0, 1, 1, 1)
-        gridLayout.addWidget(message_label, 1, 0, 1, 2)
+        gridLayout.addWidget(message_button, 1, 0, 1, 2)
         gridLayout.addWidget(dont_remember_button, 2, 0, 1, 2)
         close_button.clicked.connect(self.close_notification)
-        dont_remember_button.clicked.connect(self.func_remembered)
+        dont_remember_button.clicked.connect(self.dont_remember_notification)
         self.setLayout(gridLayout)
 
         self.timer = QTimer()
@@ -94,7 +108,7 @@ class NotificationWindow(QWidget):
         # Establecer la geometría inicial para la animación
         desktop_rect = QApplication.desktop().availableGeometry()
         new_x = desktop_rect.right()  # Iniciar desde la derecha de la pantalla
-        position_pixels = (WINDOW_HEIGHT - MARGIN_BOTTOM) * self.position
+        position_pixels = ((WINDOW_HEIGHT - MARGIN_BOTTOM) * self.position) + 5
         new_y = desktop_rect.bottom() - position_pixels
         self.setGeometry(new_x, new_y, WINDOW_WIDTH, WINDOW_HEIGHT)
 
@@ -104,6 +118,15 @@ class NotificationWindow(QWidget):
         final_geometry = QRect(final_x, final_y, WINDOW_WIDTH, WINDOW_HEIGHT)
         self.animation.setEndValue(final_geometry)
 
+    def dont_remember_notification(self):
+        data = FileManager.load()
+        try:
+            notifications_games = data["dont_notifications_games"]
+        except KeyError:
+            notifications_games = []
+        notifications_games.append(int(self.position - 1))
+        FileManager.update_from_key("dont_notifications_games", notifications_games)
+
     def close_notification(self):
         self.close()
 
@@ -111,12 +134,16 @@ class NotificationWindow(QWidget):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     notifications = []
+    def test():
+        pass
+
     for i in range(5):
         print(f"animacion: {i}")
         new_notification = NotificationWindow(
-            "Notification Title",
+            "Notification Titlasdasdasdasdasdasdasdasdasdasdadadsae",
             "This is a notification message.",
-            position=i
+            position=i,
+            func_remembered=test
             )
         notifications.append(new_notification)
         new_notification.show()

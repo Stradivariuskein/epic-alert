@@ -1,0 +1,245 @@
+
+:root {
+    --background-color-2: rgb(22, 58, 112);
+    --background-color-1: rgb(110, 174, 235);
+    --text-color: antiquewhite;
+    --celeste-1: #1a83ab
+  }
+
+
+body {
+    font-family: "Rubik", sans-serif;
+    background-color: var(--background-color-1);
+    color: var(--text-color);
+    margin: 0;
+}
+
+img {
+    max-width: 50vw;
+}
+
+/* navbar*/
+
+header {
+    display: inline;
+}
+
+nav {
+    background-color: var(--background-color-2);
+    position: sticky;
+    width: 100%;
+    border-bottom: 5px solid #3f99cd;
+    top: 0;
+    left: 0;
+    padding: 5px 0;
+}
+
+.img-logo {
+    
+    width: 40px;
+    height: 40px;
+}
+
+.logo-div {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.conteiner-nav {
+    display: flex;
+    gap: 5%;
+    margin: 0px 20px;
+    border-bottom: 2px bold black;
+    overflow: auto;
+}
+
+.conteiner-nav-links {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-grow: 1;
+    
+}
+
+.nav-btn {
+    border-bottom: 2px solid var(--celeste-1);
+    color: antiquewhite;
+    transition: background-color 0.5s ease, 
+    color 0.5s ease, 
+    transform 0.3s ease, 
+    border-bottom 0.1s ease; 
+    
+    font-size: 20px;
+    padding: 7px;
+    text-decoration: none;
+    box-sizing: border-box;
+    
+}
+
+.nav-btn:hover {
+    background-color: antiquewhite;
+    color: black;
+    scale: 1.2;
+    z-index: 10;
+    border-bottom: 3px solid var(--celeste-1);
+    border-radius: 2px;
+}
+
+/* main sections */
+main {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+section {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-container {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100vw;
+    margin: 0;
+}
+
+h1 {
+
+    font-size: 28px;
+    margin: 10px 0px;
+}
+
+h2 {
+    text-align: center;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.conteiner-section {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 0px 20px 0;
+    max-width: 85vw;
+}
+
+.section-colors-1 {
+    color: black;
+}
+
+.section-colors-2 {
+    background-color: var(--background-color-2);
+}
+
+/* home */
+
+.btn-download {
+    box-sizing: border-box;
+    padding: 10px;
+    background-color: var(--background-color-2);
+    text-decoration: none;
+    color: antiquewhite;
+    border-radius: 5px;
+
+}
+
+/* Conoce mas */
+.img-perfil {
+    height: 200px;
+    width: 200px;
+    min-width: 200px;
+    border-radius: 50%;
+}
+
+.container-img-networks {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 56px;
+    margin-top: 15px;
+    position: relative;
+}
+
+.social-networks {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+footer {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    color: black;
+}
+
+.btn {
+    background-color: var(--background-color-2);
+    text-decoration: none;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border-bottom: 3px solid antiquewhite;
+    color: antiquewhite;
+    padding: 5px 5px;
+    transition: background-color 0.5s ease, 
+    color 0.5s ease, 
+    transform 0.3s ease, 
+    border-bottom 0.1s ease;
+}
+
+.btn:hover {
+    background-color: antiquewhite;
+    color: black;
+    scale: 1.2;
+    z-index: 10;
+    border-bottom: 3px solid var(--background-color-2);
+    border-radius: 2px;
+}
+
+.portafolio-btn {
+    transition: transform 0.3s ease;
+    height: 200px;
+    width: 200px;
+}
+
+
+.portafolio-btn::after {
+    content: "Ver portafolio";
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: rgba(90, 90, 90, 0.5); 
+    color: white; 
+    border-radius: 50%; 
+    height: 200px;
+    width: 200px;
+    line-height: 200px;
+    text-align: center;
+    box-sizing: border-box;
+    backdrop-filter: blur(3px);
+
+    opacity: 0; 
+    visibility: hidden;
+    transition: opacity 1s ease, visibility 1s ease;
+}
+
+.portafolio-btn:hover::after {
+    opacity: 1; 
+    visibility: visible; 
+}

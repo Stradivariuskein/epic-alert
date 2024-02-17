@@ -9,6 +9,9 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+WINDOWS_HEIGHT = 366
+WINDOWS_WIDTH = 746
+
 class DraggableLabel(QtWidgets.QLabel):
     def __init__(self, text):
         super().__init__(text)
@@ -22,16 +25,27 @@ class DraggableLabel(QtWidgets.QLabel):
         if event.buttons() == QtCore.Qt.LeftButton:
             delta = event.pos() - self.drag_start_position
             self.window().move(self.window().pos() + delta)
+    
+    def paintEvent(self, event):
+        painter = QtGui.QPainter(self)
+
+        metrics = QtGui.QFontMetrics(self.font())
+        elided = metrics.elidedText(self.text(), QtCore.Qt.ElideRight, self.width()-100)
+
+        painter.drawText(self.rect(), self.alignment(), elided)
+
 
 class Ui(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(747, 367)
-        Dialog.setFixedSize(746, 366)
+        Dialog.resize(WINDOWS_WIDTH, WINDOWS_HEIGHT)
+        Dialog.setFixedSize(WINDOWS_WIDTH, WINDOWS_HEIGHT)
         Dialog.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-        Dialog.setStyleSheet("* {\n"
+        Dialog.setStyleSheet(
+"* {\n"
 "    font: 87 8pt \"Segoe UI Black\";\n"
 "    color: white;\n"
+
 "}\n"
 "\n"
 "QPushButton {\n"
@@ -52,6 +66,8 @@ class Ui(object):
 ".background_img {\n"
 "    padding: 0px;\n"
 "    qproperty-alignment: AlignCenter;\n"
+"    background-color: rgb(29, 50, 107);\n"
+
 "}\n"
 "\n"
 "QLabel#title_game {\n"
@@ -107,7 +123,7 @@ class Ui(object):
         self.title_game.setLineWidth(1)
         self.title_game.setMidLineWidth(0)
         self.title_game.setAlignment(QtCore.Qt.AlignCenter)
-        self.title_game.setWordWrap(False)
+        #self.title_game.setWordWrap(False)
         self.title_game.setIndent(1)
         self.title_game.setObjectName("title_game")
         #self.gridLayout_2.addWidget(self.title_game, 0, 1, 1, 1)

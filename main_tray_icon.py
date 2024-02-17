@@ -5,10 +5,12 @@ from PyQt5.QtWidgets import QApplication, QDialog, QMenu, QSystemTrayIcon
 from PyQt5.QtCore import QTimer
 import sys
 from datetime import datetime, timedelta
+from file_manager import FileManager
 
 HEADLESS_PARAMS = ["headless", "-headless", "--headless"]
 CHECK_GAMES_DELY = 43200000  # 12hs
-NOTIFICATION_DELAY = 3600000  # 1hs
+NOTIFICATION_DELAY = 10000#3600000  # 1hs
+
 
 
 class TrayApplication(QDialog):
@@ -27,7 +29,8 @@ class TrayApplication(QDialog):
 
         self.timer_notification = QTimer()
         self.timer_notification.timeout.connect(self.show_notifications)
-        self.timer_notification.timeout.connect(self.timer_notification.stop)
+        #self.timer_notification.timeout.connect(self.timer_notification.stop)
+        self.timer_notification.start(NOTIFICATION_DELAY)
 
         try:
             if sys.argv[1] in HEADLESS_PARAMS:
@@ -37,33 +40,49 @@ class TrayApplication(QDialog):
         except Exception as e:
             print(f"Error: parameter exception {e}")
             raise Exception(f"Unexpected error: parameter exception {e}")
+        
+        # games_ids = []
+        # for i in range(len(games)):
+        #     new_notification = NotificationWindow(
+        #         games[i].title_game,
+        #         games[i].expiration,
+        #         self.dont_remember_notification,
+        #         self.main_window.show,
+        #         position=i,                
+        #         )
+        #     games_ids.append(i)
+        #     new_notification.show()
+        #     self.notifications.append(new_notification)
 
-        for i in range(len(games)):
-            new_notification = NotificationWindow(
-                games[i].title_game,
-                games[i].expiration,
-                self.remember_notification,
-                position=i)
-            new_notification.show()
-            self.notifications.append(new_notification)
-
+        # FileManager.update_from_key("notifications_games", games_ids)
+        self.show_notifications()
         self.init_ui()
         self.create_tray_icon()
 
     def show_notification(self, position):
-        self.notifications = []
+
         new_notification = NotificationWindow(
                     self.main_window.games[position].title_game,
                     self.main_window.games[position].expiration,
-                    self.remember_notification,
+                    self.open_main_window,
                     position=position
                     )
-        self.notifications.append(new_notification)
-        new_notification.show()
+        return new_notification
 
     def show_notifications(self):
+        self.notifications = []
+        data = FileManager.load()
+        try:
+            games_ids = data['dont_notifications_games']
+        except KeyError:
+            games_ids = []
         for i in range(len(self.epic_api.games)):
-            self.show_notification(i)
+            if i in games_ids:
+                continue
+            new_notification = self.show_notification(i)
+            self.notifications.append(new_notification)
+            new_notification.show()
+
 
     def cron_update(self):
         self.olds_games = self.epic_api.get_olds_games()
@@ -100,6 +119,7 @@ class TrayApplication(QDialog):
 
     def open_main_window(self):
         self.main_window.show()
+        self.main_window.raise_()
 
     def exit_application(self):
         QApplication.quit()
@@ -117,8 +137,6 @@ class TrayApplication(QDialog):
 
         return changes
 
-    def remember_notification(self):
-        self.timer_notification.start(NOTIFICATION_DELAY)
 
 
 if __name__ == "__main__":
