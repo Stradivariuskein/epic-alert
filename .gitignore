@@ -1,15 +1,22 @@
 Prototypes
 env
+env311
 __pycache__
 .vscode
 notas.txt
 games_data.json
 main.spec
-Free Games beta.spec
+*.spec
 propaganda.txt
 build
+build*
 build/*
 dist
+dist*
 dist/*
+.venv
 landingpage/boseto.png
 landingpage/notas.txt
+*.psd
+setup_py2exe
+releases

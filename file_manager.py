@@ -19,7 +19,7 @@ class FileManager:
         except Exception as e:
             logging.error(
                 f"Unexpected error in save_file: {type(e).__name__}: {e}"
-                )
+            )
 
     @staticmethod
     def load(file_path=None):
@@ -33,7 +33,7 @@ class FileManager:
         except Exception as e:
             logging.error(
                 f"Unexpected error in get_olds_games {type(e).__name__}"
-                )
+            )
 
         return None
 
@@ -50,7 +50,7 @@ class FileManager:
         except Exception as e:
             logging.error(
                 f"Unexpected error in update: {type(e).__name__}: {e}"
-                )
+            )
 
 
 if __name__ == "__main__":
