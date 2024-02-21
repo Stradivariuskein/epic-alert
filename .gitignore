@@ -1,5 +1,6 @@
 Prototypes
 env
+.venv
 env311
 __pycache__
 .vscode

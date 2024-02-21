@@ -7,10 +7,8 @@ import sys
 from datetime import datetime, timedelta
 from file_manager import FileManager
 
-HEADLESS_PARAMS = ["headless", "-headless", "--headless"]
 CHECK_GAMES_DELY = 43200000  # 12hs
 NOTIFICATION_DELAY = 3600000  # 1hs
-
 
 
 class TrayApplication(QDialog):
@@ -29,31 +27,22 @@ class TrayApplication(QDialog):
 
         self.timer_notification = QTimer()
         self.timer_notification.timeout.connect(self.show_notifications)
-        #self.timer_notification.timeout.connect(self.timer_notification.stop)
+        # self.timer_notification.timeout.connect(self.timer_notification.stop)
         self.timer_notification.start(NOTIFICATION_DELAY)
 
-        try:
-            if sys.argv[1] in HEADLESS_PARAMS:
-                pass
-        except IndexError:
-            self.main_window.show()
-        except Exception as e:
-            print(f"Error: parameter exception {e}")
-            raise Exception(f"Unexpected error: parameter exception {e}")
-        
-        self.show_notifications()
+        # self.show_notifications()
         self.init_ui()
         self.create_tray_icon()
 
     def show_notification(self, index_game, position):
 
         new_notification = NotificationWindow(
-                    self.main_window.games[index_game].title_game,
-                    self.main_window.games[index_game].expiration,
-                    self.open_main_window,
-                    position=position,
-                    index_game=index_game
-                    )
+            self.main_window.games[index_game].title_game,
+            self.main_window.games[index_game].expiration,
+            self.open_main_window,
+            position=position,
+            index_game=index_game
+        )
         return new_notification
 
     def show_notifications(self):
@@ -71,13 +60,12 @@ class TrayApplication(QDialog):
             self.notifications.append(new_notification)
             new_notification.show()
 
-
     def cron_update(self):
         self.olds_games = self.epic_api.get_olds_games()
         diff_time = datetime.now() - datetime.strptime(
             self.olds_games['last_update'],
             "%Y-%m-%d %H:%M:%S"
-            )
+        )
 
         if diff_time >= timedelta(minutes=1):  # timedelta(hours=12):
             if self.see_changes():
@@ -131,7 +119,6 @@ class TrayApplication(QDialog):
                 changes = True
 
         return changes
-
 
 
 if __name__ == "__main__":

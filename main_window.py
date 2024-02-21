@@ -7,10 +7,9 @@ import requests
 from auto_buy_game import ApiFreeGame
 
 
-
-
 class App(QDialog):
     '''main window app'''
+
     def __init__(self, games=None):
         super().__init__()
         self.ui = Ui()
@@ -31,7 +30,6 @@ class App(QDialog):
         self.ui.next_button.clicked.connect(self.view_next_game)
         self.ui.previous_button.clicked.connect(self.view_previous_game)
 
-
         # self.put_elements_body()
         self.put_elements_windows()
         self.put_elements_header()
@@ -46,13 +44,13 @@ class App(QDialog):
                 pixmap.loadFromData(
                     requests.get(
                         self.games[i].img_src
-                        ).content
-                        )
+                    ).content
+                )
                 # Escalar la imagen al alto deseado (300px)746, 366
                 scaled_pixmap = pixmap.scaledToHeight(
                     WINDOWS_HEIGHT,
                     Qt.SmoothTransformation
-                    )
+                )
                 self.img_games.append(scaled_pixmap)
             return len(self.img_games) == len(self.games)
 
@@ -61,16 +59,16 @@ class App(QDialog):
         self.ui.title_game.setText(
             self.games[self.index_game]
             .title_game.upper()
-            )
+        )
         self.ui.expiration.setText(
             self.games[self.index_game]
             .expiration.upper()
-            )
-        # en la primera iteración no hay una función asignada
+        )
+        # en la primera iteración no hay una función asignada al boton buy
         if (
             self.ui.buy_button.receivers(self.ui.buy_button.clicked) == 1
         ):
-            self.ui.buy_button.clicked.disconnect(self.buy_game)
+            self.ui.buy_button.clicked.disconnect()
 
         self.ui.buy_button.clicked.connect(self.buy_game)
 
@@ -148,7 +146,7 @@ class App(QDialog):
             self, current: QWidget,
             next: QWidget,
             next_start_position: int
-            ):
+    ):
         current_move_animation = QPropertyAnimation(current, b'geometry')
         current_move_animation.setDuration(750)
         rect = QRect(0, 0, WINDOWS_WIDTH, WINDOWS_HEIGHT)
@@ -158,14 +156,14 @@ class App(QDialog):
             0,
             WINDOWS_WIDTH,
             WINDOWS_HEIGHT
-            )
+        )
         current_move_animation.setKeyValueAt(0.4, rect)
         rect = QRect(
             int(- (WINDOWS_WIDTH * .8)),
             0,
             WINDOWS_WIDTH,
             WINDOWS_HEIGHT
-            )
+        )
         current_move_animation.setKeyValueAt(0.8, rect)
         rect = QRect(-WINDOWS_WIDTH, 0, WINDOWS_WIDTH, WINDOWS_HEIGHT)
         current_move_animation.setKeyValueAt(1, rect)
@@ -178,14 +176,14 @@ class App(QDialog):
             0,
             WINDOWS_WIDTH,
             WINDOWS_HEIGHT
-            )
+        )
         next_move_animation.setKeyValueAt(0.4, rect)
         rect = QRect(
             int((WINDOWS_WIDTH * .2)),
             0,
             WINDOWS_WIDTH,
             WINDOWS_HEIGHT
-            )
+        )
         next_move_animation.setKeyValueAt(0.8, rect)
         rect = QRect(0, 0, WINDOWS_WIDTH, WINDOWS_HEIGHT)
         next_move_animation.setKeyValueAt(1, rect)
@@ -196,7 +194,7 @@ class App(QDialog):
             current: QWidget,
             next: QWidget,
             next_start_position: int
-            ):
+    ):
         current_move_animation = QPropertyAnimation(current, b'geometry')
         current_move_animation.setDuration(750)
         rect = QRect(0, 0, WINDOWS_WIDTH, WINDOWS_HEIGHT)
@@ -207,14 +205,14 @@ class App(QDialog):
             0,
             WINDOWS_WIDTH,
             WINDOWS_HEIGHT
-            )
+        )
         current_move_animation.setKeyValueAt(0.4, rect)
         rect = QRect(
             int((WINDOWS_WIDTH * .8)),
             0,
             WINDOWS_WIDTH,
             WINDOWS_HEIGHT
-            )
+        )
         current_move_animation.setKeyValueAt(0.8, rect)
         rect = QRect(WINDOWS_WIDTH, 0, WINDOWS_WIDTH, WINDOWS_HEIGHT)
         current_move_animation.setKeyValueAt(1, rect)
@@ -228,14 +226,14 @@ class App(QDialog):
             0,
             WINDOWS_WIDTH,
             WINDOWS_HEIGHT
-            )
+        )
         next_move_animation.setKeyValueAt(0.4, rect)
         rect = QRect(
             int(next_start_position+(WINDOWS_WIDTH * .8)),
             0,
             WINDOWS_WIDTH,
             WINDOWS_HEIGHT
-            )
+        )
         next_move_animation.setKeyValueAt(0.8, rect)
         rect = QRect(0, 0, WINDOWS_WIDTH, WINDOWS_HEIGHT)
         next_move_animation.setKeyValueAt(1, rect)
@@ -250,7 +248,7 @@ class App(QDialog):
             self.ui.background_img,
             self.ui.next_background_img,
             start_next_position
-            )
+        )
 
     def set_animation_back(self):
         start_next_position = -WINDOWS_WIDTH
@@ -260,7 +258,7 @@ class App(QDialog):
             self.ui.background_img,
             self.ui.next_background_img,
             start_next_position
-            )
+        )
 
     def start_animation_next(self):
 
