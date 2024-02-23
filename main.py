@@ -92,12 +92,11 @@ class Main_app:
             if sys.argv[1] in HEADLESS_PARAMS:
                 pass
         except IndexError:  # por si no se le pasa parametros
-
             self.tray_app.main_window.show()
-            self.tray_app.show_notifications()
         except Exception as e:
             print(f"Error: parameter exception {e}")
             raise Exception(f"Unexpected error: parameter exception {e}")
+        self.tray_app.show_notifications()
         os.environ['PLAYWRIGHT_BROWSERS_PATH'] = '0'
         self.app.setQuitOnLastWindowClosed(False)
         sys.exit(self.app.exec_())
